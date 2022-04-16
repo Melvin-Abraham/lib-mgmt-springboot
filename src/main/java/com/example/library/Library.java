@@ -18,6 +18,16 @@ public class Library {
         return books;
     }
 
+    public Book getBookById(int id) {
+        for (Book book : books) {
+            if (book.getId() == id) {
+                return book;
+            }
+        }
+
+        return null;
+    }
+
     public void addBook(Book book) {
         books.add(book);
     }
