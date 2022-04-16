@@ -1,10 +1,7 @@
 package com.example.library;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -41,6 +38,7 @@ public class LibraryController {
     }
 
     @PostMapping("/add")
+    @ResponseStatus(HttpStatus.CREATED)
     public void addBook(
             @RequestParam(name = "name") String name,
             @RequestParam(name = "author") String author
