@@ -8,6 +8,10 @@ public class Library {
 
     Library() {
         books = new ArrayList<Book>();
+
+        // Add dummy books for demo
+        addBook(new Book(10290, "Steve Jobs", "Walter Isaacson"));
+        addBook(new Book(15768, "Refactoring", "Kent Beck and Martin Fowler"));
     }
 
     public List<Book> getBooks() {
