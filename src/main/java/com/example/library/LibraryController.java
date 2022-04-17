@@ -25,16 +25,16 @@ public class LibraryController {
     public Book getBookById(
             @RequestParam(name = "id") int id
     ) {
-        Book book = library.getBookById(id);
-
-        if (book == null) {
+        try {
+            Book book = library.getBookById(id);
+            return book;
+        }
+        catch (BookNotFoundException exception) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "No book with requested ID was found"
+                    exception.getMessage()
             );
         }
-
-        return book;
     }
 
     @PostMapping("/add")
@@ -52,19 +52,18 @@ public class LibraryController {
             @PathVariable int id,
             @RequestBody Book book
     ) {
-        Book originalBook = library.getBookById(id);
-
-        String name = (book.getName() != null)
-                ? book.getName()
-                : originalBook.getName();
-
-        String author = (book.getAuthor() != null)
-                ? book.getAuthor()
-                : originalBook.getAuthor();
-
-        Book newBook = new Book(id, name, author);
-
         try {
+            Book originalBook = library.getBookById(id);
+
+            String name = (book.getName() != null)
+                    ? book.getName()
+                    : originalBook.getName();
+
+            String author = (book.getAuthor() != null)
+                    ? book.getAuthor()
+                    : originalBook.getAuthor();
+
+            Book newBook = new Book(id, name, author);
             library.updateBook(id, newBook);
         }
         catch (BookNotFoundException exception) {

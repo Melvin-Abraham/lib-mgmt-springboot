@@ -20,14 +20,14 @@ public class Library {
         return books;
     }
 
-    public Book getBookById(int id) {
+    public Book getBookById(int id) throws BookNotFoundException {
         for (Book book : books) {
             if (book.getId() == id) {
                 return book;
             }
         }
 
-        return null;
+        throw new BookNotFoundException("Failed to find book with ID: " + id);
     }
 
     public void addBook(Book book) {
@@ -49,12 +49,6 @@ public class Library {
 
     public void deleteBook(int id) throws BookNotFoundException {
         Book book = getBookById(id);
-
-        if (book != null) {
-            books.remove(book);
-        }
-        else {
-            throw new BookNotFoundException("Failed to find book with ID: " + id);
-        }
+        books.remove(book);
     }
 }
