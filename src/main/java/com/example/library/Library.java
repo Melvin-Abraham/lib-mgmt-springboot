@@ -42,4 +42,9 @@ public class Library {
             }
         }
     }
+
+    public void deleteBook(int id) {
+        Book book = getBookById(id);
+        books.remove(book);
+    }
 }

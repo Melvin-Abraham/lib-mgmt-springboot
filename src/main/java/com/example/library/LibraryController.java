@@ -65,4 +65,9 @@ public class LibraryController {
         Book newBook = new Book(id, name, author);
         library.updateBook(id, newBook);
     }
+
+    @DeleteMapping("delete/{id}")
+    public void deleteBook(@PathVariable int id) {
+        library.deleteBook(id);
+    }
 }
