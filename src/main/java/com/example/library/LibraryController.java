@@ -63,7 +63,16 @@ public class LibraryController {
                 : originalBook.getAuthor();
 
         Book newBook = new Book(id, name, author);
-        library.updateBook(id, newBook);
+
+        try {
+            library.updateBook(id, newBook);
+        }
+        catch (BookNotFoundException exception) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    exception.getMessage()
+            );
+        }
     }
 
     @DeleteMapping("delete/{id}")

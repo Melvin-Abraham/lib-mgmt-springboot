@@ -1,5 +1,7 @@
 package com.example.library;
 
+import org.springframework.http.HttpStatus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class Library {
         books.add(book);
     }
 
-    public void updateBook(int id, Book newBook) {
+    public void updateBook(int id, Book newBook) throws BookNotFoundException {
         for (int i = 0; i < books.size(); i++) {
             Book book = books.get(i);
 
@@ -41,6 +43,8 @@ public class Library {
                 return;
             }
         }
+
+        throw new BookNotFoundException("Failed to find book with ID: " + id);
     }
 
     public void deleteBook(int id) throws BookNotFoundException {
