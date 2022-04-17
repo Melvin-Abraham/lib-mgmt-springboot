@@ -17,6 +17,19 @@ public class LibraryController {
         id = 1;
     }
 
+    @GetMapping("/")
+    public HashMap<String, String> apiDoc() {
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put("/books", "[GET] Get list of all the books");
+        map.put("/book/{id}", "[GET] Get particular book based on book ID");
+        map.put("/add/", "[POST] Add a new book. Required params: name & author");
+        map.put("/update/{id}", "[PATCH] Updates a book. Consumes JSON request body containing the details to patch");
+        map.put("/delete/{id}", "[DELETE] Deletes a book");
+
+        return map;
+    }
+
     @GetMapping("/books")
     public List<Book> books() {
         return library.getBooks();
