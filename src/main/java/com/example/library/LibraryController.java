@@ -46,4 +46,23 @@ public class LibraryController {
         Book book = new Book(id++, name, author);
         library.addBook(book);
     }
+
+    @PatchMapping(value = "/update/{id}", consumes = {"application/json"})
+    public void updateBook(
+            @PathVariable int id,
+            @RequestBody Book book
+    ) {
+        Book originalBook = library.getBookById(id);
+
+        String name = (book.getName() != null)
+                ? book.getName()
+                : originalBook.getName();
+
+        String author = (book.getAuthor() != null)
+                ? book.getAuthor()
+                : originalBook.getAuthor();
+
+        Book newBook = new Book(id, name, author);
+        library.updateBook(id, newBook);
+    }
 }

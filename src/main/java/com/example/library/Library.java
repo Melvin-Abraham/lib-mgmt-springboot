@@ -31,4 +31,15 @@ public class Library {
     public void addBook(Book book) {
         books.add(book);
     }
+
+    public void updateBook(int id, Book newBook) {
+        for (int i = 0; i < books.size(); i++) {
+            Book book = books.get(i);
+
+            if (book.getId() == id) {
+                books.set(i, newBook);
+                return;
+            }
+        }
+    }
 }
