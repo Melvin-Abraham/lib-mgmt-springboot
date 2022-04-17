@@ -68,6 +68,14 @@ public class LibraryController {
 
     @DeleteMapping("delete/{id}")
     public void deleteBook(@PathVariable int id) {
-        library.deleteBook(id);
+        try {
+            library.deleteBook(id);
+        }
+        catch (BookNotFoundException exception) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    exception.getMessage()
+            );
+        }
     }
 }

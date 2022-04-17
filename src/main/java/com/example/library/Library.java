@@ -43,8 +43,14 @@ public class Library {
         }
     }
 
-    public void deleteBook(int id) {
+    public void deleteBook(int id) throws BookNotFoundException {
         Book book = getBookById(id);
-        books.remove(book);
+
+        if (book != null) {
+            books.remove(book);
+        }
+        else {
+            throw new BookNotFoundException("Failed to find book with ID: " + id);
+        }
     }
 }
