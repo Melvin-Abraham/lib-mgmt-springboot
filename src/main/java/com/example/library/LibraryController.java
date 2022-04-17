@@ -21,9 +21,9 @@ public class LibraryController {
         return library.getBooks();
     }
 
-    @GetMapping("/book")
+    @GetMapping("/book/{id}")
     public Book getBookById(
-            @RequestParam(name = "id") int id
+            @PathVariable int id
     ) {
         try {
             Book book = library.getBookById(id);
