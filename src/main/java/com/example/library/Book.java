@@ -22,4 +22,15 @@ public class Book {
         this.name = name;
         this.author = author;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Book anotherBook = (Book) obj;
+
+        return (
+                this.getId() == anotherBook.getId()
+                && this.getName().equals(anotherBook.getName())
+                && this.getAuthor().equals(anotherBook.getAuthor())
+        );
+    }
 }
