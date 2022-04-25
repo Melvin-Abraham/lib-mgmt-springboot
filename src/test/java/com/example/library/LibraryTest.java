@@ -48,4 +48,16 @@ public class LibraryTest {
 
         assertEquals(updatedBook, targetBook);
     }
+
+    @Test
+    void shouldBeAbleToDeleteBookBasedOnBookId() throws BookNotFoundException {
+        Library library = new Library();
+        Book book = new Book(1, "Test Book", "Test Author");
+        library.addBook(book);
+
+        library.deleteBook(book.getId());
+        List<Book> allBooks = library.getBooks();
+
+        assertEquals(0, allBooks.size());
+    }
 }
