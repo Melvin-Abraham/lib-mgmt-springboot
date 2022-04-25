@@ -31,4 +31,21 @@ public class LibraryTest {
         // Check if the length of books returned match the number of books added
         assertEquals(2, allBooks.size());
     }
+
+    @Test
+    void shouldBeAbleToUpdateBookBasedOnBookId() throws BookNotFoundException {
+        Library library = new Library();
+        Book book = new Book(1, "Test Book", "Test Author");
+        library.addBook(book);
+
+        Book updatedBook = new Book(
+                book.getId(),
+                "Hello World",
+                book.getAuthor()
+        );
+        library.updateBook(book.getId(), updatedBook);
+        Book targetBook = library.getBookById(book.getId());
+
+        assertEquals(updatedBook, targetBook);
+    }
 }
