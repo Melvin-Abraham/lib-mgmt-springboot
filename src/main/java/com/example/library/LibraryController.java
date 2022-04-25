@@ -14,6 +14,11 @@ public class LibraryController {
 
     LibraryController() {
         library = new Library();
+
+        // Add dummy books for demo
+        library.addBook(new Book(10290, "Steve Jobs", "Walter Isaacson"));
+        library.addBook(new Book(15768, "Refactoring", "Kent Beck and Martin Fowler"));
+
         id = 1;
     }
 
