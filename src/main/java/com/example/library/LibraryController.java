@@ -40,7 +40,7 @@ public class LibraryController {
         return library.getBooks();
     }
 
-    @GetMapping("/book/{id}")
+    @GetMapping("/books/{id}")
     public Book getBookById(
             @PathVariable int id
     ) {
@@ -56,7 +56,7 @@ public class LibraryController {
         }
     }
 
-    @PostMapping("/add")
+    @PostMapping("/books")
     @ResponseStatus(HttpStatus.CREATED)
     public void addBook(
             @RequestParam(name = "name") String name,
@@ -66,7 +66,7 @@ public class LibraryController {
         library.addBook(book);
     }
 
-    @PatchMapping(value = "/update/{id}", consumes = {"application/json"})
+    @PatchMapping(value = "/books/{id}", consumes = {"application/json"})
     public void updateBook(
             @PathVariable int id,
             @RequestBody Book book
@@ -93,7 +93,7 @@ public class LibraryController {
         }
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/books/{id}")
     public void deleteBook(@PathVariable int id) {
         try {
             library.deleteBook(id);
