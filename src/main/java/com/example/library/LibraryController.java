@@ -1,9 +1,11 @@
 package com.example.library;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,8 +62,15 @@ public class LibraryController {
     @PostMapping("/books")
     @ResponseStatus(HttpStatus.CREATED)
     public void addBook(
-            @RequestBody Book book
+            @Valid @RequestBody Book book,
+            Errors errors
     ) {
+        if (errors.hasErrors()) {
+            System.out.println("ERRORS!!");
+        }
+
+        System.out.println(errors);
+
         book.setId(id++);
         library.addBook(book);
     }

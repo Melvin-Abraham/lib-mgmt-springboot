@@ -1,9 +1,31 @@
 package com.example.library;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class Book {
     private int id;
-    private String name;
-    private String author;
+
+    @NotNull
+    @NotEmpty
+    @Size(min = 10, max = 100, message = "Book name must be between {min} to {max} characters long")
+    private final String name;
+
+    @NotNull(message = "Author name must be provided")
+    @NotEmpty(message = "Author name must not be empty")
+    @Size(min = 10, max = 100, message = "Author name must be between {min} to {max} characters long")
+    private final String author;
+
+    Book(
+            int id,
+            String name,
+            String author
+    ) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+    }
 
     public int getId() {
         return id;
@@ -19,12 +41,6 @@ public class Book {
 
     public String getAuthor() {
         return author;
-    }
-
-    Book(int id, String name, String author) {
-        this.id = id;
-        this.name = name;
-        this.author = author;
     }
 
     @Override
