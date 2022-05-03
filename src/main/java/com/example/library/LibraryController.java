@@ -26,11 +26,12 @@ public class LibraryController {
     public HashMap<String, String> apiDoc() {
         HashMap<String, String> map = new HashMap<>();
 
-        map.put("/books", "[GET] Get list of all the books");
-        map.put("/book/{id}", "[GET] Get particular book based on book ID");
-        map.put("/add/", "[POST] Add a new book. Required params: name & author");
-        map.put("/update/{id}", "[PATCH] Updates a book. Consumes JSON request body containing the details to patch");
-        map.put("/delete/{id}", "[DELETE] Deletes a book");
+        map.put("[GET] /", "Get basic API documentation");
+        map.put("[GET] /books", "Get list of all the books");
+        map.put("[GET] /books/{id}", "Get particular book based on book ID");
+        map.put("[POST] /books", "Add a new book. Required params: name & author");
+        map.put("[PATCH] /books/{id}", "Updates a book. Consumes JSON request body containing the details to patch");
+        map.put("[DELETE] /books/{id}", "Deletes a book");
 
         return map;
     }
