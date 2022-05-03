@@ -59,10 +59,9 @@ public class LibraryController {
     @PostMapping("/books")
     @ResponseStatus(HttpStatus.CREATED)
     public void addBook(
-            @RequestParam(name = "name") String name,
-            @RequestParam(name = "author") String author
+            @RequestBody Book book
     ) {
-        Book book = new Book(id++, name, author);
+        book.setId(id++);
         library.addBook(book);
     }
 

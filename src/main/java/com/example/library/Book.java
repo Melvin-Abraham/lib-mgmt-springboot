@@ -9,6 +9,10 @@ public class Book {
         return id;
     }
 
+    public void setId(int newId) {
+        id = newId;
+    }
+
     public String getName() {
         return name;
     }
