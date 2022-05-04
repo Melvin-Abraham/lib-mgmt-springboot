@@ -5,9 +5,10 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
+import javax.validation.*;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class LibraryController {
@@ -75,23 +76,24 @@ public class LibraryController {
         library.addBook(book);
     }
 
-    @PatchMapping(value = "/books/{id}", consumes = {"application/json"})
+    @PatchMapping(value = "/books/{id}")
     public void updateBook(
             @PathVariable int id,
-            @RequestBody Book book
+            @RequestBody Book partialBook
     ) {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        Validator validator = validatorFactory.getValidator();
+
         try {
             Book originalBook = library.getBookById(id);
+            Book newBook = originalBook.patch(partialBook);
 
-            String name = (book.getName() != null)
-                    ? book.getName()
-                    : originalBook.getName();
+            Set<ConstraintViolation<Book>> violations = validator.validate(newBook);
 
-            String author = (book.getAuthor() != null)
-                    ? book.getAuthor()
-                    : originalBook.getAuthor();
+            if (!violations.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            }
 
-            Book newBook = new Book(id, name, author);
             library.updateBook(id, newBook);
         }
         catch (BookNotFoundException exception) {
