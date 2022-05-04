@@ -53,4 +53,17 @@ public class Book {
                 && this.getAuthor().equals(anotherBook.getAuthor())
         );
     }
+
+    public Book patch(Book partialBook) {
+        String resolvedName = partialBook.getName() != null ? partialBook.getName() : this.getName();
+        String resolvedAuthor = partialBook.getAuthor() != null ? partialBook.getAuthor() : this.getAuthor();
+
+        Book patchedBook = new Book(
+                this.id,
+                resolvedName,
+                resolvedAuthor
+        );
+
+        return patchedBook;
+    }
 }
