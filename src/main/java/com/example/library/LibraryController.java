@@ -3,7 +3,6 @@ package com.example.library;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.*;
 import java.util.HashMap;
@@ -47,17 +46,9 @@ public class LibraryController {
     @GetMapping("/books/{id}")
     public Book getBookById(
             @PathVariable int id
-    ) {
-        try {
-            Book book = library.getBookById(id);
-            return book;
-        }
-        catch (BookNotFoundException exception) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    exception.getMessage()
-            );
-        }
+    ) throws BookNotFoundException {
+        Book book = library.getBookById(id);
+        return book;
     }
 
     @PostMapping("/books")
@@ -65,12 +56,10 @@ public class LibraryController {
     public void addBook(
             @Valid @RequestBody Book book,
             Errors errors
-    ) {
+    ) throws RequestValidationException {
         if (errors.hasErrors()) {
-            System.out.println("ERRORS!!");
+            throw new RequestValidationException(errors);
         }
-
-        System.out.println(errors);
 
         book.setId(id++);
         library.addBook(book);
@@ -80,40 +69,24 @@ public class LibraryController {
     public void updateBook(
             @PathVariable int id,
             @RequestBody Book partialBook
-    ) {
+    ) throws BookNotFoundException, RequestValidationException {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();
 
-        try {
-            Book originalBook = library.getBookById(id);
-            Book newBook = originalBook.patch(partialBook);
+        Book originalBook = library.getBookById(id);
+        Book newBook = originalBook.patch(partialBook);
 
-            Set<ConstraintViolation<Book>> violations = validator.validate(newBook);
+        Set<ConstraintViolation<Book>> violations = validator.validate(newBook);
 
-            if (!violations.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-            }
-
-            library.updateBook(id, newBook);
+        if (!violations.isEmpty()) {
+            throw new RequestValidationException(violations);
         }
-        catch (BookNotFoundException exception) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    exception.getMessage()
-            );
-        }
+
+        library.updateBook(id, newBook);
     }
 
     @DeleteMapping("/books/{id}")
-    public void deleteBook(@PathVariable int id) {
-        try {
-            library.deleteBook(id);
-        }
-        catch (BookNotFoundException exception) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    exception.getMessage()
-            );
-        }
+    public void deleteBook(@PathVariable int id) throws BookNotFoundException {
+        library.deleteBook(id);
     }
 }
