@@ -8,6 +8,7 @@ import javax.validation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @RestController
 public class LibraryController {
@@ -18,8 +19,8 @@ public class LibraryController {
         library = new Library();
 
         // Add dummy books for demo
-        library.addBook(new Book(10290, "Steve Jobs", "Walter Isaacson", null, "24-10-2011"));
-        library.addBook(new Book(15768, "Refactoring", "Kent Beck and Martin Fowler", null, "01-01-1999"));
+        library.addBook(new Book("Steve Jobs", "Walter Isaacson", null, "24-10-2011"));
+        library.addBook(new Book("Refactoring", "Kent Beck and Martin Fowler", null, "01-01-1999"));
 
         id = 1;
     }
@@ -45,7 +46,7 @@ public class LibraryController {
 
     @GetMapping("/books/{id}")
     public Book getBookById(
-            @PathVariable int id
+            @PathVariable String id
     ) throws BookNotFoundException {
         Book book = library.getBookById(id);
         return book;
@@ -61,13 +62,13 @@ public class LibraryController {
             throw new RequestValidationException(errors);
         }
 
-        book.setId(id++);
+        book.setId(UUID.randomUUID().toString());
         library.addBook(book);
     }
 
     @PatchMapping(value = "/books/{id}")
     public void updateBook(
-            @PathVariable int id,
+            @PathVariable String id,
             @RequestBody Book partialBook
     ) throws BookNotFoundException, RequestValidationException {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
@@ -86,7 +87,7 @@ public class LibraryController {
     }
 
     @DeleteMapping("/books/{id}")
-    public void deleteBook(@PathVariable int id) throws BookNotFoundException {
+    public void deleteBook(@PathVariable String id) throws BookNotFoundException {
         library.deleteBook(id);
     }
 }

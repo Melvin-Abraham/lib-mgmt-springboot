@@ -4,9 +4,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 public class Book {
-    private int id;
+    private String id;
 
     @NotNull
     @NotEmpty
@@ -28,24 +29,23 @@ public class Book {
     private final String publishedOn;
 
     Book(
-            int id,
             String name,
             String author,
             String description,
             String publishedOn
     ) {
-        this.id = id;
+        this.id = generateBookId();
         this.name = name;
         this.author = author;
         this.description = description;
         this.publishedOn = publishedOn;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int newId) {
+    public void setId(String newId) {
         id = newId;
     }
 
@@ -67,10 +67,12 @@ public class Book {
 
     @Override
     public boolean equals(Object obj) {
+        if (!(obj instanceof Book)) return false;
+
         Book anotherBook = (Book) obj;
 
         return (
-                this.getId() == anotherBook.getId()
+                this.getId().equals(anotherBook.getId())
                 && this.getName().equals(anotherBook.getName())
                 && this.getAuthor().equals(anotherBook.getAuthor())
         );
@@ -83,13 +85,17 @@ public class Book {
         String resolvedPublishDate = partialBook.getPublishedOn() != null ? partialBook.getPublishedOn() : this.getPublishedOn();
 
         Book patchedBook = new Book(
-                this.id,
                 resolvedName,
                 resolvedAuthor,
                 resolvedDescription,
                 resolvedPublishDate
         );
 
+        patchedBook.setId(this.getId());
         return patchedBook;
+    }
+
+    private String generateBookId() {
+        return UUID.randomUUID().toString();
     }
 }

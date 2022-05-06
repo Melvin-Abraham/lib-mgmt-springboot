@@ -10,19 +10,19 @@ public class LibraryTest {
     @Test
     void shouldBeAbleToAddBook() throws BookNotFoundException {
         Library library = new Library();
-        Book newBook = new Book(1, "Test Book", "Test Author", null, "05-05-2022");
+        Book newBook = new Book("Test Book", "Test Author", null, "05-05-2022");
 
         library.addBook(newBook);
 
-        Book retrievedBook = library.getBookById(1);
+        Book retrievedBook = library.getBookById(newBook.getId());
         assertEquals(retrievedBook, newBook);
     }
 
     @Test
     void shouldBeAbleToReturnAllBooks() {
         Library library = new Library();
-        Book firstBook = new Book(1, "Book 1", "Author 1", null, "05-05-2022");
-        Book secondBook = new Book(2, "Book 2", "Author 2", null, "05-05-2022");
+        Book firstBook = new Book("Book 1", "Author 1", null, "05-05-2022");
+        Book secondBook = new Book("Book 2", "Author 2", null, "05-05-2022");
 
         library.addBook(firstBook);
         library.addBook(secondBook);
@@ -35,11 +35,10 @@ public class LibraryTest {
     @Test
     void shouldBeAbleToUpdateBookBasedOnBookId() throws BookNotFoundException {
         Library library = new Library();
-        Book book = new Book(1, "Test Book", "Test Author", null, "05-05-2022");
+        Book book = new Book("Test Book", "Test Author", null, "05-05-2022");
         library.addBook(book);
 
         Book updatedBook = new Book(
-                book.getId(),
                 "Hello World",
                 book.getAuthor(),
                 null,
@@ -54,7 +53,7 @@ public class LibraryTest {
     @Test
     void shouldBeAbleToDeleteBookBasedOnBookId() throws BookNotFoundException {
         Library library = new Library();
-        Book book = new Book(1, "Test Book", "Test Author", null, "05-05-2022");
+        Book book = new Book("Test Book", "Test Author", null, "05-05-2022");
         library.addBook(book);
 
         library.deleteBook(book.getId());

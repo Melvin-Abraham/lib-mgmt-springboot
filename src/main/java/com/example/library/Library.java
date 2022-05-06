@@ -14,9 +14,9 @@ public class Library {
         return books;
     }
 
-    public Book getBookById(int id) throws BookNotFoundException {
+    public Book getBookById(String id) throws BookNotFoundException {
         for (Book book : books) {
-            if (book.getId() == id) {
+            if (book.getId().equals(id)) {
                 return book;
             }
         }
@@ -28,11 +28,13 @@ public class Library {
         books.add(book);
     }
 
-    public void updateBook(int id, Book newBook) throws BookNotFoundException {
+    // @warn: Side-effect -> Changes ID of the provided book
+    public void updateBook(String id, Book newBook) throws BookNotFoundException {
         for (int i = 0; i < books.size(); i++) {
             Book book = books.get(i);
+            newBook.setId(id);
 
-            if (book.getId() == id) {
+            if (book.getId().equals(id)) {
                 books.set(i, newBook);
                 return;
             }
@@ -41,7 +43,7 @@ public class Library {
         throw new BookNotFoundException("Failed to find book with ID: " + id);
     }
 
-    public void deleteBook(int id) throws BookNotFoundException {
+    public void deleteBook(String id) throws BookNotFoundException {
         Book book = getBookById(id);
         books.remove(book);
     }
